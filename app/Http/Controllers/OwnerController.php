@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Owner;
+use App\Models\Car;
 
 class OwnerController extends Controller
 {
-    public function index(){
-        $data = Owner::get();
-        return view('owner-list',compact('data'));
+    public function index(Request $request){
+        $filter=$request->session()->get('filterOwner',(object)['name'=>null,'surname'=>null,'years'=>null]);
+        $data = Owner::filter($filter)->get();
+       
+        return view('owner-list',['data'=>$data,'filter'=>$filter, 'owners'=>Owner::all()]);
     }
     public function addOwner(){
         return view('add-owner');
@@ -59,5 +62,14 @@ class OwnerController extends Controller
         Owner::where('id','=',$id)->delete();
         return redirect()->back()->with('success','Owner Deleted Successfully');
 
+    }
+    public function search(Request $request){
+        $filterOwner=new \stdClass();
+        $filterOwner->name=$request->name;
+        $filterOwner->surname=$request->surname;
+        $filterOwner->years=$request->years;
+     
+        $request->session()->put('filterOwner',$filterOwner);
+        return redirect()->back()->with('success','Search Was Successful');
     }
 }
