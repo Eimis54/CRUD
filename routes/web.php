@@ -36,3 +36,10 @@ Route::get('delete-car/{id}',[CarController::class,'deleteCar']);
 Route::post('/car/search',[CarController::class,'search'])->name('car.search');
 Route::post('/owner/search',[OwnerController::class,'search'])->name('owner.search');
 
+Route::get('login',[AuthController::class,'index'])->name('login');
+Route::post('post-login',[AuthController::class,'postLogin'])->name('login.post');
+Route::get('registration',[AuthController::class,'registration'])->name('register');
+Route::post('post-registration',[AuthController::class,'postRegistration'])->name('register.post');
+Route::get('dashboard',[AuthController::class,'dashboard']);
+Route::get('logout',[AuthController::class,'logout'])->name('logout');
+
